@@ -1,12 +1,13 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import { Container, Input, Row, Col } from 'design-react-kit';
+import { createUseStyles } from 'react-jss';
 import content from '../../contents/home-page/home.yml';
 import faq from '../../contents/faq-page/faq.yml';
+import { SEO } from '../components/SEO';
 import { SideNavigation } from './faq/SideNavigation';
 import { QuestionSection } from './faq/QuestionSection';
 import { SupportSection } from './faq/SupportSection';
 import { HeroSupport } from './support/Hero';
-import { createUseStyles } from 'react-jss';
 
 const useStyles = createUseStyles({
   noResults: {
@@ -33,7 +34,7 @@ export const FaqPage = () => {
   const handleChange = (event) => {
     setInputValue(event.target.value);
     if (event.target.value.length >= 3) {
-      let newQuest = [];
+      const newQuest = [];
       faq.questions.forEach((question) => {
         if (getAccordionsFiltered(question).length) {
           newQuest.push(question);
@@ -41,7 +42,7 @@ export const FaqPage = () => {
       });
 
       if (isMobile && filterId != 'all') {
-        let filteredQuestions = [];
+        const filteredQuestions = [];
         newQuest.forEach((question) => {
           if (question.sectionId == filterId) {
             filteredQuestions.push(question);
@@ -54,7 +55,7 @@ export const FaqPage = () => {
     } else {
       if (isMobile) {
         if (filterId !== 'all') {
-          let filteredQuestions = [];
+          const filteredQuestions = [];
           faq.questions.forEach((question) => {
             if (question.sectionId == filterId) {
               filteredQuestions.push(question);
@@ -73,17 +74,13 @@ export const FaqPage = () => {
   function getAccordionsFiltered(question) {
     const regexp = new RegExp(event.target.value, 'i');
 
-    const filterAccordions = question.accordions.filter((accordion) =>
-      regexp.test(accordion.title)
-    );
-
-    return filterAccordions
+    return question.accordions.filter((accordion) => regexp.test(accordion.title));
   }
 
   useEffect(() => {
     if (!isMobile) {
       if (inputValue && inputValue.length >= 3) {
-        let newQuest = [];
+        const newQuest = [];
         faq.questions.forEach((question) => {
           if (getAccordionsFiltered(question).length) {
             newQuest.push(question);
@@ -100,7 +97,7 @@ export const FaqPage = () => {
     if (filterId) {
       if (filterId == 'all') {
         if (inputValue) {
-          let newQuest = [];
+          const newQuest = [];
           faq.questions.forEach((question) => {
             if (getAccordionsFiltered(question).length) {
               newQuest.push(question);
@@ -111,16 +108,14 @@ export const FaqPage = () => {
           setQuestions(faq.questions);
         }
       } else {
-        let filteredQuestions = [];
+        const filteredQuestions = [];
         faq.questions.forEach((question) => {
           if (question.sectionId == filterId) {
             filteredQuestions.push(question);
           }
         });
         const regexp = new RegExp(inputValue, 'i');
-        const filterAccordions = filteredQuestions[0].accordions.filter(
-          (accordion) => regexp.test(accordion.title)
-        );
+        const filterAccordions = filteredQuestions[0].accordions.filter((accordion) => regexp.test(accordion.title));
         if (!filterAccordions.length) {
           setQuestions(filterAccordions);
         } else {
@@ -132,6 +127,7 @@ export const FaqPage = () => {
 
   return (
     <>
+      <SEO title={faq.title} />
       <div className="sr-only">
         <h1>{content.name}</h1>
       </div>
@@ -154,26 +150,15 @@ export const FaqPage = () => {
               <SideNavigation getFilter={setFilterId} />
             </Col>
             <Col lg={9} className="px-lg-3">
-              {questions.map((question, i) => {
-                return (
-                  <QuestionSection
-                    key={question.title}
-                    item={question}
-                    inputText={inputValue}
-                  />
-                );
-              })}
-              {!questions.length && (
-                <p className={classes.noResults}>{faq.noResults}</p>
-              )}
+              {questions.map((question, i) => (
+                <QuestionSection key={question.title} item={question} inputText={inputValue} />
+              ))}
+              {!questions.length && <p className={classes.noResults}>{faq.noResults}</p>}
             </Col>
           </Row>
         </Container>
       </div>
-      <SupportSection
-        supportList={faq.support.cards}
-        title={faq.support.title}
-      />
+      <SupportSection supportList={faq.support.cards} title={faq.support.title} />
     </>
   );
 };

@@ -2,16 +2,16 @@
 import React from 'react';
 import { StaticImage } from 'gatsby-plugin-image';
 import { createUseStyles } from 'react-jss';
+import { Button } from 'design-react-kit';
 import { HeroTitle } from '../../components/hero/HeroTitle';
 import { HeroBody } from '../../components/hero/HeroBody';
 import { HeroCtaContainer } from '../../components/hero/HeroCtaContainer';
 import { HeroGraphic } from '../../components/hero/HeroGraphic';
 import { Hero } from '../../components/hero/Hero';
-import { ExternalLink } from '../../components/ExternalLink';
 import content from '../../../contents/support-page/support.yml';
 
 const {
-  heroAssistance: { title, body, btnText, altImg },
+  heroAssistance: { title, body, btnText },
 } = content;
 
 
@@ -39,21 +39,13 @@ export const Assistance = () => {
           <HeroTitle title={title} className={classes.heroTitle} />
           <HeroBody html={body} />
           <HeroCtaContainer>
-            <ExternalLink
-              linkTo="#"
-              ariaLabel=""
-              className="btn text-uppercase mx-4 ml-lg-0 my-4 btn-primary"
-            >
+            <Button color="primary" className="text-uppercase my-4">
               {btnText}
-            </ExternalLink>
+            </Button>
           </HeroCtaContainer>
         </div>
         <HeroGraphic className="col-lg-6">
-          <StaticImage
-            src="../../images/section01.jpg"
-            alt={altImg}
-            aria-label={altImg}
-          />
+          <StaticImage src="../../images/section01.jpg" alt="" />
         </HeroGraphic>
       </div>
     </Hero>
